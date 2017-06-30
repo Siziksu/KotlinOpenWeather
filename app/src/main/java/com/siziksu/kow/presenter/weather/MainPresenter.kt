@@ -8,13 +8,14 @@ import com.siziksu.kow.common.model.weather.OpenWeather
 import com.siziksu.kow.common.model.weather.response.Weather
 import com.siziksu.kow.common.utils.DateUtils
 import com.siziksu.kow.domain.weather.IWeatherRequests
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
 class MainPresenter : IMainPresenter<IMainView>() {
 
     companion object {
-        private const val TAG = "WeatherPresenter"
+        private const val TAG = "MainPresenter"
     }
 
     private val connectionManager by lazy { ConnectionManager(context) }
@@ -51,14 +52,25 @@ class MainPresenter : IMainPresenter<IMainView>() {
                                 view?.showProgress(false)
                             },
                             { view?.showProgress(false) }
-                    )
+                    ) ?: onRequestNull()
         }
         if (connected) {
-            Log.d(TAG, context?.getString(R.string.connection_ok))
+            Log.i(TAG, context?.getString(R.string.connection_ok) ?: onContextNull())
         } else {
             view?.showError()
-            Log.d(TAG, context?.getString(R.string.connection_error))
+            Log.i(TAG, context?.getString(R.string.connection_error) ?: onContextNull())
         }
+    }
+
+    private fun onRequestNull(): Disposable? {
+        view?.showError()
+        view?.showProgress(false)
+        Log.i(TAG, "Request is null")
+        return Observable.create<Weather> { }.subscribe()
+    }
+
+    private fun onContextNull(): String? {
+        return "Context is null"
     }
 
     private fun processResponse(response: OpenWeather): Weather {

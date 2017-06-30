@@ -9,6 +9,7 @@ import io.reactivex.schedulers.Schedulers
 class WeatherRequests : IWeatherRequests {
 
     companion object {
+        private const val TAG = "WeatherRequests"
         private const val METRIC = "metric"
     }
 
@@ -22,6 +23,6 @@ class WeatherRequests : IWeatherRequests {
     override fun getWeather(city: String): Observable<OpenWeather> {
         return weatherClientService
                 ?.getWeather(city, BuildConfig.OPEN_WEATHER_API_KEY, METRIC)
-                ?.subscribeOn(Schedulers.io()) ?: Observable.create { }
+                ?.subscribeOn(Schedulers.io()) ?: Observable.error { Throwable("Service is null") }
     }
 }

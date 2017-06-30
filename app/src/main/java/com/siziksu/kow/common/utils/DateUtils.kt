@@ -5,7 +5,7 @@ import java.util.*
 class DateUtils {
 
     companion object {
-        private const val TAG = "SystemUtils"
+        private const val TAG = "DateUtils"
     }
 
     val currentTime: String

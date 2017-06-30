@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit
 class WeatherClientAdapter {
 
     companion object {
+        private const val TAG = "WeatherClientAdapter"
         private const val BASE_URL = "http://api.openweathermap.org/"
         private const val CONNECTION_TIMEOUT = 5L
     }

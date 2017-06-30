@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), IMainView {
 
     companion object {
+        private const val TAG = "MainActivity"
         private const val CITY = "Barcelona,Spain"
     }
 
