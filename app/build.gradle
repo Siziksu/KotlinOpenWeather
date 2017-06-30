@@ -1,0 +1,65 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        applicationId "com.siziksu.kow"
+        minSdkVersion 19
+        targetSdkVersion 25
+        versionCode 2519001
+        versionName "0.0.1"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    // Disable signing if there is no available keystore (local development)
+    def properSigningConfig = android.signingConfigs.debug
+    // KeyStore and KeyAlias Password. Uses environment variables to resolve.
+    def keyStorePass = "$System.env.KEY_STORE_PASS"
+    def keyAliasName = "$System.env.KEY_ALIAS"
+    def keyAliasPassword = "$System.env.KEY_ALIAS_PASS"
+    // keyStorePath should point to the .jks file
+    def keyStorePath = "$System.env.KEY_PATH"
+    signingConfigs {
+        release {
+            storeFile file(keyStorePath)
+            storePassword keyStorePass
+            keyAlias keyAliasName
+            keyPassword keyAliasPassword
+        }
+    }
+    if (keyStorePath != "null") {
+        // Set signing config to use this keystore
+        properSigningConfig = signingConfigs.release
+    }
+    buildTypes {
+        buildTypes.each {
+            it.buildConfigField "String", "OPEN_WEATHER_API_KEY", open_weather_api_key
+        }
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig properSigningConfig
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+}

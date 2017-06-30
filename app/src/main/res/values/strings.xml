@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">OpenWeather with Kotlin</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="temperature_location_placeholder">Place</string>
+    <string name="temperature_placeholder">Temperature</string>
+    <string name="temperature_update_time_placeholder">Update time</string>
+    <string name="temperature">Temperature of %s ºC</string>
+    <string name="temperature_update_time">Updated at %s</string>
+    <string name="temperature_error">There was an error while trying to retrieve the temperature</string>
+    <string name="connection_error">Network not available</string>
+    <string name="connection_ok">Network available</string>
+</resources>
